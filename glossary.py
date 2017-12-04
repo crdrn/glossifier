@@ -7,6 +7,7 @@ def build_glossary(key_terms, delimiter=', '):
     Builds a glossary using the target key terms and their page numbers from the raker.
 
     :param key_terms: dict of the key term and a list of pages where it is found
+    :param delimiter: delimiter for consecutive groups of pages in the prettified string
     :return: dict of the key term and a prettified string with page ranges
     """
     glossary = {}
