@@ -1,4 +1,4 @@
-#TODO: Add logging
+# TODO: Add logging
 from pdfminer.converter import TextConverter
 from pdfminer.pdfdocument import PDFEncryptionError
 from pdfminer.pdfpage import PDFPage
@@ -72,14 +72,16 @@ def _merge_text(list_of_text):
 
 def _get_above_average_keywords(extracter):
     """
-    Returns only those keywords that are
-    :param extracter:
-    :return:
+    Returns only those keywords that have Rake scores of at least
+    half the maximum score in the text
+    :param extracter: (Rake) keyword extracter
+    :return: (list) chosen keywords
     """
     ranked_phrases = extracter.get_ranked_phrases_with_scores()
     max_score = ranked_phrases[0][0]
-    for i, (score,_) in enumerate(ranked_phrases):
+    for i, (score, _) in enumerate(ranked_phrases):
         if score < max_score/2:
+            # return only phrases, not scores
             return extracter.get_ranked_phrases()[:i]
     raise Exception('Could not find keyphrases')
 
@@ -88,7 +90,7 @@ def _get_keywords_from_text(all_text, metric='average', language=None):
     """
     Makes a list of keywords that are deemed the most
     relevant for being glossed based on specified metric
-    :param original: list of original keywords
+    :param all_text: text to get keywords from
     :param metric: chosen  metric for 'good' keywords
     :return: (list) chosen keywords
     """
