@@ -76,8 +76,12 @@ def _get_above_average_keywords(extracter):
     :param extracter:
     :return:
     """
-    maxscore = extracter.degree
-    print(maxscore)
+    ranked_phrases = extracter.get_ranked_phrases_with_scores()
+    max_score = ranked_phrases[0][0]
+    for i, (score,_) in enumerate(ranked_phrases):
+        if score < max_score/2:
+            return extracter.get_ranked_phrases()[:i]
+    raise Exception('Could not find keyphrases')
 
 
 def _get_keywords_from_text(all_text, metric='average', language=None):
@@ -94,6 +98,8 @@ def _get_keywords_from_text(all_text, metric='average', language=None):
         return _get_above_average_keywords(extracter)
     elif metric is 'all':
         return extracter.get_ranked_phrases()
+    elif metric is 'frequency':
+        pass
     else:
         raise Exception('Keyword metric is invalid')
 
